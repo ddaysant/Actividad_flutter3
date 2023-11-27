@@ -230,8 +230,8 @@ class _PostalCodeSearchState extends State<PostalCodeSearch> with TickerProvider
 
  Future<String> fetchRandomImageUrl(String locationName) async {
   // ignore: prefer_const_declarations
-  final unsplashApiKey = 'v4vu4kAOYYN8e-wglbq3Fu6dYqBPCQR_GQ3LsSsBU20'; // Reemplaza con tu clave de API de Unsplash
-  final query = Uri.encodeComponent('$locationName turismo'); // Agrega "turismo" a la búsqueda para obtener imágenes más turísticas
+  final unsplashApiKey = 'v4vu4kAOYYN8e-wglbq3Fu6dYqBPCQR_GQ3LsSsBU20'; 
+  final query = Uri.encodeComponent('$locationName turismo'); 
   final unsplashApiUrl = 'https://api.unsplash.com/photos/random?query=$query&client_id=$unsplashApiKey';
 
   try {
