@@ -5,7 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:vibration/vibration.dart';
 
 void main() {
-  runApp(CodigosPostalesApp());
+  runApp(const CodigosPostalesApp());
 }
 
 class PostalCode {
@@ -32,30 +32,37 @@ class PostalCode {
 }
 
 class CodigosPostalesApp extends StatelessWidget {
+  const CodigosPostalesApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.from(
-        colorScheme: ColorScheme.light().copyWith(primary: Color.fromARGB(255, 243, 33, 131), secondary: Color.fromARGB(255, 226, 67, 120)),
+        colorScheme:const ColorScheme.light().copyWith(
+          primary: const Color.fromARGB(255, 243, 33, 131),
+         secondary: const Color.fromARGB(255, 226, 67, 120)),
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Explora Códigos Postales'),
+          title: const Text('Explora Códigos Postales'),
         ),
-        body: PostalCodeSearch(),
+        body: const PostalCodeSearch(),
       ),
     );
   }
 }
 
 class PostalCodeSearch extends StatefulWidget {
+  const PostalCodeSearch({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _PostalCodeSearchState createState() => _PostalCodeSearchState();
 }
 
 class _PostalCodeSearchState extends State<PostalCodeSearch> with TickerProviderStateMixin {
-  TextEditingController _controller = TextEditingController();
+ final TextEditingController _controller = TextEditingController();
   PostalCode? _postalCode;
   String _errorMessage = '';
   late AnimationController _resultAnimationController;
@@ -68,12 +75,12 @@ class _PostalCodeSearchState extends State<PostalCodeSearch> with TickerProvider
     super.initState();
 
     _resultAnimationController = AnimationController(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       vsync: this,
     );
 
     _resultSlideAnimation = Tween<Offset>(
-      begin: Offset(0.0, 1.0),
+      begin: const Offset(0.0, 1.0),
       end: Offset.zero,
     ).animate(
       CurvedAnimation(
@@ -83,7 +90,7 @@ class _PostalCodeSearchState extends State<PostalCodeSearch> with TickerProvider
     );
 
     _searchButtonAnimationController = AnimationController(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       vsync: this,
     );
 
@@ -114,13 +121,13 @@ class _PostalCodeSearchState extends State<PostalCodeSearch> with TickerProvider
         children: [
           TextField(
             controller: _controller,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Introduce el código postal',
               border: OutlineInputBorder(),
             ),
             keyboardType: TextInputType.number,
           ),
-          SizedBox(height: 16.0),
+          const SizedBox (height: 16.0),
           AnimatedBuilder(
             animation: _searchButtonScaleAnimation,
             builder: (context, child) {
@@ -150,17 +157,17 @@ class _PostalCodeSearchState extends State<PostalCodeSearch> with TickerProvider
                       }
                     }
                   },
-                  child: Text('Buscar'),
+                  child: const Text('Buscar'),
                 ),
               );
             },
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           Text(
             _errorMessage,
-            style: TextStyle(color: Colors.red),
+            style: const TextStyle(color: Colors.red),
           ),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
           if (_postalCode != null)
             SlideTransition(
               position: _resultSlideAnimation,
@@ -174,13 +181,13 @@ class _PostalCodeSearchState extends State<PostalCodeSearch> with TickerProvider
                       Text('Localidad: ${_postalCode!.placeName}'),
                       Text('Provincia: ${_postalCode!.state}'),
                       Text('País: ${_postalCode!.country}'),
-                      SizedBox(height: 16.0),
+                      const SizedBox(height: 16.0),
                       Image.network(_postalCode!.imageUrl, height: 150),
                       ElevatedButton(
                         onPressed: () {
                           launchGoogleMaps(_postalCode!.placeName);
                         },
-                        child: Text('Abrir en Google Maps'),
+                        child: const Text('Abrir en Google Maps'),
                       ),
                     ],
                   ),
@@ -198,6 +205,7 @@ class _PostalCodeSearchState extends State<PostalCodeSearch> with TickerProvider
   }
 
   bool isNumeric(String value) {
+    // ignore: unnecessary_null_comparison
     if (value == null) {
       return false;
     }
@@ -221,6 +229,7 @@ class _PostalCodeSearchState extends State<PostalCodeSearch> with TickerProvider
   }
 
  Future<String> fetchRandomImageUrl(String locationName) async {
+  // ignore: prefer_const_declarations
   final unsplashApiKey = 'v4vu4kAOYYN8e-wglbq3Fu6dYqBPCQR_GQ3LsSsBU20'; // Reemplaza con tu clave de API de Unsplash
   final query = Uri.encodeComponent('$locationName turismo'); // Agrega "turismo" a la búsqueda para obtener imágenes más turísticas
   final unsplashApiUrl = 'https://api.unsplash.com/photos/random?query=$query&client_id=$unsplashApiKey';
@@ -241,7 +250,9 @@ class _PostalCodeSearchState extends State<PostalCodeSearch> with TickerProvider
 
   void launchGoogleMaps(String locationName) async {
     final url = 'https://www.google.com/maps/search/?api=1&query=$locationName';
+    // ignore: deprecated_member_use
     if (await canLaunch(url)) {
+      // ignore: deprecated_member_use
       await launch(url);
     } else {
       throw 'No se puede abrir Google Maps';
